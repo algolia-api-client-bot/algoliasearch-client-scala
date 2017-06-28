@@ -23,43 +23,17 @@
  * THE SOFTWARE.
  */
 
-package algolia.definitions
+package algolia.objects
 
-import algolia.AlgoliaDsl.Of
-import algolia.http.{HttpPayload, POST}
-import algolia.responses.Task
-import algolia.{AlgoliaClient, Executable}
-import org.json4s.Formats
+case class Rule(objectID: String,
+                condition: Condition,
+                consequence: Consequence,
+                description: Option[String] = None)
 
-import scala.concurrent.{ExecutionContext, Future}
+case class Condition(pattern: String, anchoring: String, context: Option[String] = None)
 
-case class ClearIndexDefinition(index: String) extends Definition {
+case class Consequence(params: Option[Map[String, Any]] = None,
+                       promote: Option[Iterable[ConsequencePromote]] = None,
+                       userData: Option[Map[String, Any]] = None)
 
-  override private[algolia] def build(): HttpPayload =
-    HttpPayload(POST, Seq("1", "indexes", index, "clear"), isSearch = false)
-
-}
-
-trait ClearDsl {
-
-  implicit val formats: Formats
-
-  case object clear {
-
-    def index(index: String): ClearIndexDefinition =
-      ClearIndexDefinition(index)
-
-    def synonyms(of: Of): ClearSynonymsDefinition = ClearSynonymsDefinition()
-
-    def rules(of: Of): ClearRulesDefinition = ClearRulesDefinition()
-
-  }
-
-  implicit object ClearIndexDefinitionExecutable extends Executable[ClearIndexDefinition, Task] {
-    override def apply(client: AlgoliaClient, query: ClearIndexDefinition)(
-        implicit executor: ExecutionContext): Future[Task] = {
-      client.request[Task](query.build())
-    }
-  }
-
-}
+case class ConsequencePromote(objectID: String, position: Int)

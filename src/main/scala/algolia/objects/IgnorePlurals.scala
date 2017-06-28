@@ -34,7 +34,7 @@ sealed trait IgnorePlurals {
 object IgnorePlurals {
 
   case class list(isoCodes: Seq[String]) extends IgnorePlurals {
-    override val value = isoCodes.mkString(",")
+    override val value: String = isoCodes.mkString(",")
   }
 
   case object `true` extends IgnorePlurals {

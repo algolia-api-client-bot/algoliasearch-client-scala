@@ -80,6 +80,8 @@ trait DeleteDsl {
 
     def synonym(synId: String) = DeleteSynonymDefinition(synId = synId)
 
+    def rule(ruleId: String) = DeleteRuleDefinition(objectId = ruleId)
+
   }
 
   implicit object DeleteObjectDefinitionExecutable

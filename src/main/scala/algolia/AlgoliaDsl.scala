@@ -50,6 +50,7 @@ trait AlgoliaDsl
     with MoveIndexDsl
     with MultiQueriesDefinitionDsl
     with PartialUpdateObjectDsl
+    with RulesDsl
     with SearchDsl
     with SynonymsDsl
     with WaitForTaskDsl
@@ -81,6 +82,8 @@ object AlgoliaDsl extends AlgoliaDsl {
   val desc: Regex = """^desc\(([\w-]+)\)$""".r
 
   sealed trait ForwardToReplicas
+
+  sealed trait ClearExistingRules
 
   sealed trait ReplaceExistingSynonyms
 
@@ -310,6 +313,8 @@ object AlgoliaDsl extends AlgoliaDsl {
   case object forwardToReplicas extends ForwardToReplicas
 
   case object replaceExistingSynonyms extends ReplaceExistingSynonyms
+
+  case object clearExistingRules extends ClearExistingRules
 
   case object of extends Of
 

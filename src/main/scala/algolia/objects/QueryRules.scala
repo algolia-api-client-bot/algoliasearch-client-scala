@@ -23,43 +23,10 @@
  * THE SOFTWARE.
  */
 
-package algolia.definitions
+package algolia.objects
 
-import algolia.AlgoliaDsl.Of
-import algolia.http.{HttpPayload, POST}
-import algolia.responses.Task
-import algolia.{AlgoliaClient, Executable}
-import org.json4s.Formats
-
-import scala.concurrent.{ExecutionContext, Future}
-
-case class ClearIndexDefinition(index: String) extends Definition {
-
-  override private[algolia] def build(): HttpPayload =
-    HttpPayload(POST, Seq("1", "indexes", index, "clear"), isSearch = false)
-
-}
-
-trait ClearDsl {
-
-  implicit val formats: Formats
-
-  case object clear {
-
-    def index(index: String): ClearIndexDefinition =
-      ClearIndexDefinition(index)
-
-    def synonyms(of: Of): ClearSynonymsDefinition = ClearSynonymsDefinition()
-
-    def rules(of: Of): ClearRulesDefinition = ClearRulesDefinition()
-
-  }
-
-  implicit object ClearIndexDefinitionExecutable extends Executable[ClearIndexDefinition, Task] {
-    override def apply(client: AlgoliaClient, query: ClearIndexDefinition)(
-        implicit executor: ExecutionContext): Future[Task] = {
-      client.request[Task](query.build())
-    }
-  }
-
-}
+case class QueryRules(query: String,
+                      anchoring: Option[String] = None,
+                      context: Option[String] = None,
+                      page: Option[Int] = None,
+                      hitsPerPage: Option[Int] = None)

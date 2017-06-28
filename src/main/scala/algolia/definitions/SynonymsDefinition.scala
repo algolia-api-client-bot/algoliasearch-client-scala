@@ -27,7 +27,7 @@ package algolia.definitions
 
 import algolia.AlgoliaDsl.{ForwardToReplicas, ReplaceExistingSynonyms}
 import algolia.http._
-import algolia.objects.{AbstractSynonym, QuerySynonyms}
+import algolia.objects.{AbstractSynonym, QuerySynonyms, Rule}
 import algolia.responses.{SearchSynonymResult, Task}
 import algolia.{AlgoliaClient, Executable}
 import org.json4s.Formats
@@ -200,6 +200,12 @@ trait SynonymsDsl {
 
     def synonyms(synonyms: Iterable[AbstractSynonym]) =
       BatchSynonymsDefinition(synonyms = synonyms)
+
+    def rule(rule: Rule) =
+      SaveRuleDefinition(rule = rule)
+
+    def rules(rules: Iterable[Rule]) =
+      BatchRulesDefinition(rules = rules)
 
   }
 
